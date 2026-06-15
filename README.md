@@ -5,9 +5,6 @@
 ![Platform](https://img.shields.io/badge/Platform-AWS%20SageMaker-yellow)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> **Master's Thesis** · Master of Science in Economics and Business Administration — Business Analytics  
-> Norwegian School of Economics (NHH) · Bergen, Spring 2024  
-> **Author:** Promotosh Barua · **Supervisor:** Geir Drage Berentsen
 
 ---
 
