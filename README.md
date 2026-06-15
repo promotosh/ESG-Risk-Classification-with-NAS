@@ -297,6 +297,4 @@ esg-risk-classification-with-nas/
 
 ---
 
-## Citation
 
-Barua, P. (2024). *Optimizing ESG Risk Prediction with Neural Architecture Search (NAS): Improving Accuracy, Interpretability, and Explainability.* Master's Thesis, Master of Science in Economics and Business Administration — Business Analytics, Norwegian School of Economics (NHH), Bergen.
