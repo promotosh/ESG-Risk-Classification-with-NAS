@@ -1,5 +1,27 @@
 # Optimizing ESG Risk Prediction with Neural Architecture Search (NAS)
 
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-orange)
+![Platform](https://img.shields.io/badge/Platform-AWS%20SageMaker-yellow)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+> **Master's Thesis** · Norwegian School of Economics (NHH) · Partha Barua, 2024
+
+---
+
+## Table of Contents
+
+1. [The Problem](#the-problem)
+2. [The Data](#the-data)
+3. [Methods](#methods)
+4. [Results](#results)
+5. [LIME Explainability](#what-the-lime-analysis-revealed)
+6. [Key Finding](#key-finding)
+7. [How to Run](#how-to-run)
+8. [Limitations](#limitations)
+9. [Tech Stack](#tech-stack)
+10. [Files](#files)
+11. [Citation](#citation)
 
 ---
 
@@ -13,30 +35,35 @@ This project asks: **can Neural Architecture Search (NAS) outperform traditional
 
 ## The Data
 
-- **Source:** RepRisk dataset via Wharton Research Data Services (WRDS)
-- **Size:** 228,289 observations of real corporate ESG incidents
-- **Target variable:** RepRisk Rating (RRR) — a letter-grade risk score from AAA (low risk) to D (very high risk)
-- **Features used:** Current RRI, Peak RRI, Trend RRI, Country-Sector Average, Environmental %, Social %, Governance %
-- **Coverage:** 28 ESG issue categories across Environmental, Social, Governance, and Cross-cutting themes
+| Property | Detail |
+|---|---|
+| **Source** | RepRisk dataset via Wharton Research Data Services (WRDS) |
+| **Size** | 228,289 observations of real corporate ESG incidents |
+| **Target variable** | RepRisk Rating (RRR) — letter-grade risk score (AAA to D) |
+| **Features** | Current RRI, Peak RRI, Trend RRI, Country-Sector Average, Environmental %, Social %, Governance % |
+| **Coverage** | 28 ESG issue categories across Environmental, Social, Governance, and Cross-cutting themes |
 
 ---
 
-## What I Did
+## Methods
 
 I applied two Neural Architecture Search methods to find the optimal deep learning architecture for this tabular ESG dataset — an unusual application, since NAS is typically used for image or speech data.
 
-**Method 1: Random Search NAS** (primary method)  
+**Method 1: Random Search NAS** (primary method)
 Randomly samples neural network configurations across hyperparameter space. Used as the main method following Li & Talwalkar (2019), who showed random search is a strong and reproducible baseline.
 
-**Method 2: Efficient Neural Architecture Search (ENAS)** (benchmark)  
+**Method 2: Efficient Neural Architecture Search (ENAS)** (benchmark)
 Uses a controller trained with gradient descent to search for optimal subgraph architectures, with parameter sharing across candidate models.
 
-**Hyperparameters explored:**
-- Epochs: 100
-- Batch sizes: 32, 64, 128, 256
-- Hidden units: 64, 128, 256
-- Learning rates: 0.001, 0.01, 0.1
-- Activation functions: ReLU, Tanh, Sigmoid
+**Hyperparameter search space:**
+
+| Hyperparameter | Values searched |
+|---|---|
+| Epochs | 100 |
+| Batch size | 32, 64, 128, 256 |
+| Hidden units | 64, 128, 256 |
+| Learning rate | 0.001, 0.01, 0.1 |
+| Activation function | ReLU, Tanh, Sigmoid |
 
 **Infrastructure:** Amazon SageMaker (ml.c3.xlarge), PyTorch, JupyterLab on AWS
 
@@ -51,7 +78,7 @@ Uses a controller trained with gradient descent to search for optimal subgraph a
 | ENAS | **99.95%** | 99.53% | 99.50% | 99.51% |
 | Random Search NAS | 99.21% | 98.04% | 95.12% | 96.33% |
 
-**Best ENAS architecture:** 64 hidden units, learning rate 0.001, Sigmoid activation  
+**Best ENAS architecture:** 64 hidden units, learning rate 0.001, Sigmoid activation
 **Best Random Search architecture:** 256 hidden units, learning rate 0.01, Sigmoid activation
 
 ENAS was more consistent across trials (98.61% → 99.95%), while Random Search showed more variability (90.63% → 99.21%) — demonstrating that controlled search outperforms pure random sampling, though both converge to strong results.
@@ -77,6 +104,39 @@ This explainability layer is what separates this work from a black-box model. In
 
 ---
 
+## How to Run
+
+### Prerequisites
+
+```bash
+pip install torch torchvision numpy pandas scikit-learn lime jupyter
+```
+
+You will also need access to the **RepRisk dataset via WRDS** and an **AWS SageMaker** environment (ml.c3.xlarge or equivalent) to reproduce the training runs at scale.
+
+### Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/promotosh/esg-risk-classification-with-nas.git
+   cd esg-risk-classification-with-nas
+   ```
+
+2. Launch the notebook:
+   ```bash
+   jupyter notebook "ESG MAIN CODE.ipynb"
+   ```
+
+3. Follow the notebook sections in order:
+   - Data loading and preprocessing
+   - Random Search NAS training
+   - ENAS training and controller optimization
+   - LIME explainability analysis
+
+> To view precomputed results without re-running, open `ESG OUTPUT HTML.html` in any browser.
+
+---
+
 ## Limitations
 
 - Single random seed used — results may vary with different initializations
@@ -97,8 +157,10 @@ This explainability layer is what separates this work from a black-box model. In
 
 ## Files
 
-- `ESG MAIN CODE.ipynb` — full NAS implementation, training loops, LIME analysis
-- `ESG OUTPUT HTML.html` — rendered notebook output with all results and visualizations
+| File | Description |
+|---|---|
+| `ESG MAIN CODE.ipynb` | Full NAS implementation, training loops, LIME analysis |
+| `ESG OUTPUT HTML.html` | Rendered notebook output with all results and visualizations |
 
 ---
 
