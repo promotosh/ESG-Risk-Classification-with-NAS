@@ -13,26 +13,48 @@
 
 ## Overview
 
-This thesis applies **Neural Architecture Search (NAS)** to classify corporate ESG (Environmental, Social, and Governance) risk ratings — an uncommon application, since NAS is typically used for unstructured data like images, audio, and text. The study shows that NAS methods work effectively on structured tabular data, achieving over 99% accuracy on a large ESG dataset, while also explaining individual predictions using LIME.
+This project applies **Neural Architecture Search (NAS)** to automatically find the best deep learning model for classifying corporate ESG (Environmental, Social, Governance) risk ratings — then explains every prediction using LIME so the model is not a black box.
+
+Most ML work on ESG data uses fixed models (random forests, gradient boosting). This project goes further: it lets the algorithm search for its own architecture, and then makes the result interpretable for investors and risk analysts.
+
+**Result:** >99% accuracy on 228,289 real ESG incident records, with per-prediction explanations showing exactly which company-level signals drove each classification.
 
 **The core research question:**  
 *Can NAS automatically find a better neural network architecture for ESG risk classification than traditional models — and can we explain why it makes each prediction?*
 
 ---
 
+## What This Project Demonstrates
+
+This project was built as a practical portfolio piece to show end-to-end data science work on a real, large-scale financial dataset.
+
+| Skill | How it is shown |
+|---|---|
+| **Deep learning with PyTorch** | Custom neural network training loops, architecture search, early stopping |
+| **Automated ML / NAS** | Implementing both Random Search and ENAS from research papers |
+| **Hyperparameter optimisation** | Systematic search across batch size, learning rate, hidden units, activation functions |
+| **Model explainability (XAI)** | LIME applied to a trained neural network on tabular financial data |
+| **Cloud ML infrastructure** | Training on AWS SageMaker (ml.c3.xlarge) with JupyterLab |
+| **Working with real financial data** | RepRisk ESG dataset (WRDS), 228K rows, 28 ESG issue categories |
+| **Research-to-code** | Implementing Li & Talwalkar (2019) NAS reproducibility framework |
+| **Results communication** | Accuracy, precision, recall, F1 across multiple trials; LIME feature importance tables |
+
+---
+
 ## Table of Contents
 
-1. [Background](#background)
-2. [Data](#data)
-3. [Methods](#methods)
-4. [Results](#results)
-5. [LIME Explainability](#lime-explainability)
-6. [Key Findings](#key-findings)
-7. [Quick Start](#quick-start)
-8. [Repository Structure](#repository-structure)
-9. [Limitations](#limitations)
-10. [Tech Stack](#tech-stack)
-11. [Citation](#citation)
+1. [What This Project Demonstrates](#what-this-project-demonstrates)
+2. [Background](#background)
+3. [Data](#data)
+4. [Methods](#methods)
+5. [Results](#results)
+6. [LIME Explainability](#lime-explainability)
+7. [Key Findings](#key-findings)
+8. [Quick Start](#quick-start)
+9. [Repository Structure](#repository-structure)
+10. [Limitations](#limitations)
+11. [Tech Stack](#tech-stack)
+12. [Citation](#citation)
 
 ---
 
@@ -189,7 +211,7 @@ This explainability layer is what separates the model from a black box. An inves
 ### 1. Prerequisites
 
 ```bash
-pip install torch torchvision numpy pandas scikit-learn lime jupyter
+pip install -r requirements.txt
 ```
 
 You will also need:
@@ -227,7 +249,8 @@ jupyter notebook "ESG MAIN CODE.ipynb"
 ```
 esg-risk-classification-with-nas/
 ├── ESG MAIN CODE.ipynb     # Complete pipeline: data prep, NAS training, LIME
-└── ESG OUTPUT HTML.html    # Pre-rendered output with all results and plots
+├── ESG OUTPUT HTML.html    # Pre-rendered output with all results and plots
+└── requirements.txt        # Python dependencies
 ```
 
 ---
