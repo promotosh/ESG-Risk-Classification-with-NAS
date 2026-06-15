@@ -5,7 +5,6 @@
 ![Platform](https://img.shields.io/badge/Platform-AWS%20SageMaker-yellow)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> **Master's Thesis** · Norwegian School of Economics (NHH) · Partha Barua, 2024
 
 ---
 
